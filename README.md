@@ -19,7 +19,7 @@ And if you have anything to comment, I'm open to discussions.</p>
 [//]: # (Add your gifs/images here:)
 <div>
 ## DEMO - Update - routing
-  <img src="./src/assets/demo - 23-09-16.gifIMAGE_1_URL" alt="demo" height="425">
+  <img src="[./src/assets/demo - 23-09-16.gifIMAGE_1_URL](https://s11.gifyu.com/images/S4v5v.gif)" alt="demo" height="425">
 </div>
 
 <hr />
