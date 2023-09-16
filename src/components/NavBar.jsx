@@ -2,9 +2,8 @@ import React from 'react'
 import CartWidget from './CartWidget'
 import {
     Menu, MenuButton, MenuList, MenuItem,
-    Flex, Box, Spacer, IconButton,
+    Flex, Box, Spacer,
 } from '@chakra-ui/react'
-import { FaShoppingCart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
@@ -21,22 +20,22 @@ const NavBar = () => {
 
                 <Box>            <Menu>
                     <MenuButton>
-                        Ropas
+                        Categorias/Temporada
                     </MenuButton>
                     <MenuList>
                         <MenuItem>
-                        <Link to={`/categoria/${'Verano'}`}>Verano</Link>
-                        </MenuItem>
-                        
-                        <MenuItem>
-                        <Link to={`/categoria/${'Invierno'}`}>Invierno</Link>
+                            <Link to={`/categoria/${'Primavera'}`}>Primavera</Link>
                         </MenuItem>
                         <MenuItem>
-                        <Link to={`/categoria/${'Otono'}`}>Otoño</Link>
+                            <Link to={`/categoria/${'Verano'}`}>Verano</Link>
                         </MenuItem>
                         <MenuItem>
-                        <Link to={`/categoria/${'Primavera'}`}>Primavera</Link>
+                            <Link to={`/categoria/${'Otono'}`}>Otoño</Link>
                         </MenuItem>
+                        <MenuItem>
+                            <Link to={`/categoria/${'Invierno'}`}>Invierno</Link>
+                        </MenuItem>
+                        <MenuItem><Link to="/item/itemdetail">Todas las temporadas con descripcion :D</Link></MenuItem>
                     </MenuList>
                 </Menu>
                 </Box>
@@ -44,16 +43,6 @@ const NavBar = () => {
                 <Spacer />
 
                 <Box p='4'>
-                    <Link to={"/cart"}>
-                        <IconButton
-                            isRound={true}
-                            variant='solid'
-                            colorScheme='teal'
-                            aria-label='Done'
-                            fontSize='20px'
-                            icon={<FaShoppingCart />}
-                        />
-                    </Link>
                     <CartWidget />
                 </Box>
             </Flex>

@@ -1,40 +1,40 @@
-import React from 'react'
-import ItemList from './ItemList'
-
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import ItemList from './ItemList';
 
 const ItemListContainer = () => {
+  const { category } = useParams(); 
+  const [filteredProductos, setFilteredProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const productos = [
-    {id: 1, name: "Remera A", description: "Soy una Remera primaveral", price: 1000, category:"Primavera"},
-    {id: 2, name: "Remera B", description: "Remera de veraneo", price: 1500, category:"Verano"},
-    {id: 3, name: "Remera C", description: "Remera de entrecasa u otoñal?", price: 2000, category:"Otono"},
-    {id: 4, name: "Remera D", description: "Remera para los dias frios...", price: 2500, category:"Invierno"},
-  ]
+    { id: 1, name: "Remera A", description: "Soy una Remera primaveral", price: 1000, category: "Primavera" },
+    { id: 2, name: "Remera B", description: "Remera de veraneo", price: 1500, category: "Verano" },
+    { id: 3, name: "Remera C", description: "Remera de entrecasa u otoñal?", price: 2000, category: "Otono" },
+    { id: 4, name: "Remera D", description: "Remera para los días fríos...", price: 2500, category: "Invierno" },
+    { id: 5, name: "Remera D2", description: "Otra Remera para los días fríos completamente diferente de la outra para dias frios...", price: 2500, category: "Invierno" },
+  ];
 
-  const mostrarProductos = new Promise((resolve, reject) =>{
-    if (productos.length > 0) { 
-      setTimeout(() => {
-        resolve(productos)
-      }, 5000)//control del tiempo del simulador de respuesta
-    } else {
-      reject("No se pudo mostrar los productos")
-    }
-  })
+  useEffect(() => {
+    setTimeout(() => {
+      const filteredProducts = category
+        ? productos.filter(producto => producto.category === category)
+        : productos;
 
-  mostrarProductos
-    .then((resultado) => {
-      console.log(resultado)
-    })
-
-    .catch((error) => {
-      console.log(error)
-    })
-
+      setFilteredProductos(filteredProducts);
+      setLoading(false);
+    }, 1000); 
+  }, [category]);
 
   return (
-<>
-    <ItemList productos={productos}/>
-</>
-  )
+    <>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ItemList productos={filteredProductos} />
+      )}
+    </>
+  );
 }
 
-export default ItemListContainer
+export default ItemListContainer;
