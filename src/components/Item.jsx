@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardBody, CardFooter, Stack, Heading, Button, Text, Image} from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
-const Item = ({ name, description, category, price }) => {
+const Item = ({ name, id, description, category, price }) => {
     return (
         <Card
             direction={{ base: 'column', sm: 'row' }}
@@ -28,9 +28,7 @@ const Item = ({ name, description, category, price }) => {
 
                 <CardFooter>
                     <Button variant='solid' colorScheme='blue'>
-                        
-                        Ver/Descripcion
-                        
+                    <Link to={`/item/${id}`}>Ver/Descripcion</Link>
                     </Button>
                 </CardFooter>
             </Stack>

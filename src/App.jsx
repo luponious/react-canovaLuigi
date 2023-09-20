@@ -6,24 +6,32 @@ import Cart from "./components/Cart";
 // import Home from "./components/Home"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
+//import ShoppingCartContext from "./context/ShopingCartContext";
+//import ComponentA from "./components/ComponentA";
+
 export const App = () => {
 
   return (
-    <>
-      <BrowserRouter>
-        <NavBar />
+         <>
+           <BrowserRouter>
+             <NavBar />
 
 
-        <Routes>
-          <Route exact path="/" element={<ItemListContainer />} />
-          <Route exact path="/cart" element={<Cart />} />
+             <Routes>
+               <Route exact path="/" element={<ItemListContainer />} />
+               <Route exact path="/cart" element={<Cart />} />
+     {/* RUTAS CON FILTRO */}
+               <Route path="/item/:id" element={<ItemDetailContainer />} />
+               <Route path="/categoria/:category" element={<ItemListContainer />} />
+             </Routes>
+           </BrowserRouter>
+         </>
 
-{/* RUTAS CON FILTRO */}
-          <Route path="/item/:id" element={<ItemDetailContainer />} />
-          <Route path="/categoria/:category" element={<ItemListContainer />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+ /*   <>
+      <ShoppingCartContext>
+        <ComponentA />
+      </ShoppingCartContext>
+    </>*/
   )
 }
 
