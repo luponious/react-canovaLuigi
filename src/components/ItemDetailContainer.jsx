@@ -1,53 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import ItemDetail from './ItemDetail';
+import Loader from './Loader';
 import { useParams } from 'react-router-dom';
+import { getFirestore, doc, getDoc } from 'firebase/firestore'; 
 
 const ItemDetailContainer = () => {
     const { id } = useParams();
-    const [productos, setProductos] = useState([]);
+    const [producto, setProducto] = useState({});
     const [loading, setLoading] = useState(true);
+    //console.log('ItemDetailContainer rendering');
 
     useEffect(() => {
-        setTimeout(() => {
-            const fetchedProductos = [
-                { id: 1, name: "Remera A", description: "Soy una Remera primaveral", price: 1000, category: "Primavera" },
-                { id: 2, name: "Remera B", description: "Remera de veraneo", price: 1500, category: "Verano" },
-                { id: 3, name: "Remera C", description: "Remera de entrecasa u otoñal?", price: 2000, category: "Otono" },
-                { id: 4, name: "Remera D", description: "Remera para los días fríos...", price: 2500, category: "Invierno" },
-                { id: 5, name: "Remera D2", description: "Otra Remera para los días fríos completamente diferente de la outra para dias frios...", price: 2500, category: "Invierno" },
-            ];
+        const fetchProducto = async () => {
+            const db = getFirestore();
+            const itemDocRef = doc(db, 'productos', id); 
 
-            // para la url "itemdetail"mostrar todo el array
-            if (id === 'itemdetail') {
-                setProductos(fetchedProductos);
-            } else {
-                // filtro por id
-                const product = fetchedProductos.find(producto => producto.id === parseInt(id));
+            try {
+                const itemSnapshot = await getDoc(itemDocRef);
 
-                if (product) {
-                    setProductos([product]);
+                if (itemSnapshot.exists()) {
+                    const itemData = itemSnapshot.data();
+                    setProducto(itemData);
                 } else {
-                    setProductos([]);
+                    console.log('Item not found');
                 }
+            } catch (error) {
+                console.error('Error fetching item data:', error);
             }
 
             setLoading(false);
-        }, 2000); 
+        };
+
+        fetchProducto();
     }, [id]);
 
     return (
         <>
             {loading ? (
-                <p>Loading...</p>
-            ) : productos.length > 0 ? (
-                productos.map(product => (
-                    <ItemDetail key={product.id} producto={product} />
-                ))
+                <Loader />
             ) : (
-                <p>No product found</p>
+                <ItemDetail producto={producto} />
             )}
         </>
     );
-}
+};
 
 export default ItemDetailContainer;

@@ -1,27 +1,53 @@
-import React from 'react'
-import Item from './Item'
+import { useState, useEffect } from 'react';
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import Item from './Item';
 
-const ItemList = ({ productos }) => {
+const ItemList = ({ category, id }) => {
+  const [producto, setProducto] = useState([]);
 
-    return (
-        <div>
+  useEffect(() => {
+    const db = getFirestore();
+    const itemCollection = collection(db, 'productos');
+    let queryRef;
+    
+    if (category) {
+      // Filter por category
+      queryRef = query(itemCollection, where('category', '==', category));
+    } else if (id) {
+      // Fetch 1 item por ID
+      queryRef = query(itemCollection, where('id', '==', id));
+    } else {
+      // (no filter)
+      queryRef = itemCollection;
+    }
 
-            {
-                productos.map((p) => {
-                    return (
-                        <Item
-                            id={p.id}
-                            name={p.name}
-                            description={p.description}
-                            category={p.category}
-                            price={p.price}
-                        />
-                    )
-                })
-            }
+    getDocs(queryRef)
+      .then((snapshot) => {
+        const docs = snapshot.docs.map((doc) => doc.data());
+        setProducto(docs);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, [category, id]);
 
-        </div>
-    )
-}
+  return (
+    <>
+      <div>
+        {producto.map((p) => (
+          <Item
+            key={p.id}
+            id={p.id}
+            imag={p.imag}
+            name={p.name}
+            description={p.description}
+            category={p.category}
+            price={p.price}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
 
-export default ItemList
+export default ItemList;

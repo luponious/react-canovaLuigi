@@ -1,39 +1,26 @@
-import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailContainer from "./components/ItemDetailContainer";
 import Cart from "./components/Cart";
-// import Home from "./components/Home"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import ShoppingCartProvider from "./context/ShopingCartContext";
 
-//import ShoppingCartContext from "./context/ShopingCartContext";
-//import ComponentA from "./components/ComponentA";
-
-export const App = () => {
-
+function App() {
   return (
-         <>
-           <BrowserRouter>
-             <NavBar />
+    <ShoppingCartProvider>
+    <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<ItemListContainer />} />
+        <Route path="/category/:category" element={<ItemListContainer />} />
+        <Route path="/item/:id" element={<ItemDetailContainer />} />
+        <Route path="/cart" element={<Cart />} />
 
 
-             <Routes>
-               <Route exact path="/" element={<ItemListContainer />} />
-               <Route exact path="/cart" element={<Cart />} />
-     {/* RUTAS CON FILTRO */}
-               <Route path="/item/:id" element={<ItemDetailContainer />} />
-               <Route path="/categoria/:category" element={<ItemListContainer />} />
-             </Routes>
-           </BrowserRouter>
-         </>
-
- /*   <>
-      <ShoppingCartContext>
-        <ComponentA />
-      </ShoppingCartContext>
-    </>*/
-  )
+        </Routes>
+    </BrowserRouter>
+    </ShoppingCartProvider>
+  );
 }
 
-
-export default App
+export default App;

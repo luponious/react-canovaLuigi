@@ -1,39 +1,71 @@
-import React from 'react'
-import { Card, CardBody, CardFooter, Stack, Heading, Button, Text, Image} from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { Card, CardBody, CardFooter, Stack, Heading, Button, Text, Image } from '@chakra-ui/react';
+import Loader from './Loader';
+import { Link } from 'react-router-dom';
 
-const Item = ({ name, id, description, category, price }) => {
-    return (
-        <Card
+const Item = () => {
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const db = getFirestore();
+        const itemCollection = collection(db, 'productos');
+        const snapshot = await getDocs(itemCollection);
+        const docs = snapshot.docs.map((doc) => doc.data());
+        setProductos(docs);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+  console.log(productos);
+
+  return (
+    <div>
+      {loading ? (
+        <Loader />
+      ) : (
+        productos.map((p) => (
+          <Card
+            key={p.id}
             direction={{ base: 'column', sm: 'row' }}
             overflow='hidden'
             variant='outline'
-        >
+          >
             <Image
-                objectFit='cover'
-                maxW={{ base: '100%', sm: '200px' }}
-                src='https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1888&q=80'
-                alt='Remera'
+              objectFit='cover'
+              maxW={{ base: '100%', sm: '200px' }}
+              src={p.imag}
+              alt={p.description}
             />
 
             <Stack>
-                <CardBody>
-                    <Heading size='md'>{name}</Heading>
+              <CardBody>
+                <Heading size='md'>{p.name}</Heading>
 
-                    <Text py='2'>
-                    <p>Categoria: {category}</p>
-                    </Text>
+                <Text py='2'>
+                  Categoria: {p.category}
+                </Text>
+              </CardBody>
 
-                </CardBody>
+              <CardFooter>
+              <Button variant='solid' colorScheme='blue'>
+  <Link to={`/item/${p.id}`}>Ver/Descripcion</Link>
+</Button>
 
-                <CardFooter>
-                    <Button variant='solid' colorScheme='blue'>
-                    <Link to={`/item/${id}`}>Ver/Descripcion</Link>
-                    </Button>
-                </CardFooter>
+              </CardFooter>
             </Stack>
-        </Card>
-    )
-}
+          </Card>
+        ))
+      )}
+    </div>
+  );
+};
 
-export default Item
+export default Item;

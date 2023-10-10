@@ -20,22 +20,21 @@ const NavBar = () => {
 
                 <Box>            <Menu>
                     <MenuButton>
-                        Categorias/Temporada
+                        Temporada
                     </MenuButton>
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/categoria/${'Primavera'}`}>Primavera</Link>
+                        <Link to={`/category/${'Primavera'}`}>Primavera</Link>
                         </MenuItem>
                         <MenuItem>
-                            <Link to={`/categoria/${'Verano'}`}>Verano</Link>
+                        <Link to={`/category/${'Verano'}`}>Verano</Link>
                         </MenuItem>
                         <MenuItem>
-                            <Link to={`/categoria/${'Otono'}`}>Otoño</Link>
+                        <Link to={`/category/${'Otono'}`}>Otono</Link>
                         </MenuItem>
                         <MenuItem>
-                            <Link to={`/categoria/${'Invierno'}`}>Invierno</Link>
+                            <Link to={`/category/${'Invierno'}`}>Invierno</Link>
                         </MenuItem>
-                        <MenuItem><Link to="/item/itemdetail">Todas las temporadas con descripcion :D</Link></MenuItem>
                     </MenuList>
                 </Menu>
                 </Box>
