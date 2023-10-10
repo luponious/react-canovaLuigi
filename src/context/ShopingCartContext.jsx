@@ -12,3 +12,4 @@ export const ShoppingCartProvider = ({ children })=> {
     )
 }
 export default ShoppingCartProvider
+
