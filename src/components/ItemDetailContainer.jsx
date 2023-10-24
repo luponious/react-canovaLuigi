@@ -1,48 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import { CartContext } from './../context/ShopingCartContext';
+import { useContext, useEffect, useState } from 'react'
 import ItemDetail from './ItemDetail';
-import Loader from './Loader';
 import { useParams } from 'react-router-dom';
-import { getFirestore, doc, getDoc } from 'firebase/firestore'; 
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../main';
 
 const ItemDetailContainer = () => {
-    const { id } = useParams();
-    const [producto, setProducto] = useState({});
-    const [loading, setLoading] = useState(true);
-    //console.log('ItemDetailContainer rendering');
+    const { setCantidad } = useContext(CartContext)
+    const [itemDetail, setItemDetail] = useState(null);
+    const id = useParams().id;
 
     useEffect(() => {
-        const fetchProducto = async () => {
-            const db = getFirestore();
-            const itemDocRef = doc(db, 'productos', id); 
+        setCantidad(1);
 
-            try {
-                const itemSnapshot = await getDoc(itemDocRef);
-
-                if (itemSnapshot.exists()) {
-                    const itemData = itemSnapshot.data();
-                    setProducto(itemData);
-                } else {
-                    console.log('Item not found');
-                }
-            } catch (error) {
-                console.error('Error fetching item data:', error);
-            }
-
-            setLoading(false);
-        };
-
-        fetchProducto();
-    }, [id]);
+        const docData = doc(db, 'productos', id);
+        getDoc(docData)
+            .then((snapshot) => {
+                setItemDetail(
+                    { ...snapshot.data(), id: snapshot.id }
+                )
+            })
+    }, [id])
 
     return (
         <>
-            {loading ? (
-                <Loader />
-            ) : (
-                <ItemDetail producto={producto} />
-            )}
+            <div className='flex justify-center p-8'>
+                {itemDetail && <ItemDetail details={itemDetail} />}
+            </div>
         </>
-    );
-};
+    )
+}
 
-export default ItemDetailContainer;
+export default ItemDetailContainer
